@@ -4,7 +4,9 @@ module Resque
   module Mailer
     class << self
       attr_accessor :default_queue_name, :default_queue_target, :current_env
-      attr_reader :excluded_environments
+      attr_reader :excluded_environments, :auto_scale
+
+      extend Resque::Plugins::HerokuAutoscaler if @auto_scale == true
 
       def excluded_environments=(envs)
         @excluded_environments = [*envs].map { |e| e.to_sym }
